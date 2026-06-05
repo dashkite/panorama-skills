@@ -23,6 +23,8 @@ cd <module-name>
 npx genie build
 ```
 
+**NOTE::** Running `genie test` also builds, so this is a precaution.
+
 ## Testing Frameworks
 
 We use the Dashkite testing stack:

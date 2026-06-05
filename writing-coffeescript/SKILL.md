@@ -16,7 +16,7 @@ This skill provides the foundational coding standards for CoffeeScript developme
 ## Whitespace & Punctuation
 
 - **Liberal Spaces**: Use spaces inside parentheses and around expressions: `( a, b, c )`, `( a + b )`.
-- **Group Punctuation**: No spaces between nested punctuation: `({ a, b, c })`, `[ @a, @b ]`. Collapse spaces for consecutive closing punctuation: `}}`, `}]`, `]]`.
+- **Group Punctuation**: No spaces between nested or adjacent punctuation (including empty inline literals next to parentheses or brackets): `({ a, b, c })`, `[ @a, @b ]`, `( data = {})`. Collapse spaces for consecutive closing punctuation: `}}`, `}]`, `]]`.
 - **Lisp-style Grouping**: Prefer grouping function calls with liberal spaces over standard C-style syntax: `( f a, b )` instead of `f( a, b )`.
 
 ## Strings
