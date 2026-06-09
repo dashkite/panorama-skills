@@ -1,0 +1,8 @@
+{
+  "name": "@dashkite/panorama-skills",
+  "version": "0.0.0",
+  "description": "Panorama skills",
+  "scripts": {
+    "build": "echo 'Nothing to build'"
+  }
+}
