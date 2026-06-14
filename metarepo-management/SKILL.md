@@ -57,7 +57,7 @@ For operations on the remote repository itself (creation, deletion, etc.):
 ## Managing Developmental Dependencies
 
 When working with core tools or shared modules that are under active development:
-- **Use the `winterfell` Branch**: Switch the dependency's repository to the `winterfell` branch to access the latest features and fixes (e.g., for `joy`, `domo`, or `genie-module`).
+- **Use the Metarepo-Named Branch**: Switch the dependency's repository to the branch with the same name as the metarepo (e.g., `central-park` or `winterfell`) before editing.
 - **Local Linking**: Update `package.json` to use local workspace links (e.g., `"@dashkite/joy": "link:../joy"`).
 - **Initialization**: After adding a developmental dependency, run `pnpm install` in the root and in the dependent repository to ensure workspace links are correctly established.
 
@@ -66,6 +66,9 @@ When working with core tools or shared modules that are under active development
 ### Using `tempo exec`
 Run a direct shell command in all repositories:
 `tempo exec "<command>"`
+
+- **Preventing Progress Bar Failures**: In environments without a fully configured TTY (such as sandboxed terminal sessions, background tasks, or certain CI environments), the progress bar can fail with a `RangeError: Invalid count value: Infinity` error. To prevent this, pass the `-P` or `--no-progress` flag:
+  `tempo exec -P "<command>"`
 
 ### Using `tempo run` (Saved Scripts)
 Run scripts defined in `.tempo/scripts.yaml`:
