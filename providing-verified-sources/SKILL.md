@@ -21,6 +21,18 @@ This skill provides guidelines and tools for adding verified external references
 - **Reference Definitions**: Define the reference links at the very bottom of the document.
   - *Example*: `[referential-integrity]: https://docs.aws.amazon.com/aurora-dsql/latest/userguide/working-with-postgresql-compatibility-migration-guide.html`
 
+## Academic Sources Guidelines
+
+Referencing academic sources (such as conference papers, journal articles, and technical reports) requires additional care due to paywalls, PDF formatting, and the length of publications.
+
+- **Prefer Persistent Identifiers**: Use Digital Object Identifiers (DOIs) via `https://doi.org/<DOI>` or stable library archive landing pages (e.g., `https://arxiv.org/abs/<id>`) instead of direct PDF download links or unstable university hosted URLs. DOIs are persistent and globally unique.
+- **Embedded Citations with Location details**: Since academic papers are often long, embed the specific location (page or section number) of the claim in the link text itself.
+  - *Example*: `[Section 3.2][raft-paper]` or `[Page 4][dynamo-paper]`
+- **Handling Paywalls & PDF access**:
+  - Link to the official publication DOI page.
+  - If a free, legal pre-print or open-access version is available (such as on arXiv or a researcher's web page), provide a secondary reference link to it.
+  - Ensure the exact supporting passage is quoted in the *Sources* appendix so that the reader can verify the claim without requiring an academic subscription.
+
 ## Link and Content Verification
 
 To guard against hallucinated links, broken URLs, or outdated information, all links must be verified programmatically before publishing.
@@ -36,7 +48,11 @@ To avoid triggering multiple separate network permission prompts during developm
 node ./providing-verified-sources/scripts/verify-links.js <path-to-document>
 ```
 
-This script will parse the target file for reference link definitions, fetch each URL, strip HTML tags, and print the HTTP status alongside a text snippet of the page for manual inspection.
+This script will parse the target file for reference link definitions, fetch each URL, strip HTML tags (for HTML content), and print the HTTP status alongside a content snippet for manual inspection.
+
+For academic and binary sources, the script has specific behaviors:
+- **PDF Documents**: If the remote server responds with a `Content-Type` of `application/pdf`, the script validates the HTTP connection but skips text parsing to avoid dumping binary data. It reports success and indicates that the source is a PDF file.
+- **Paywalled and DOI links**: The script follows redirects (such as those from `doi.org` to journal publishers) and verifies the final HTTP status. If a paywall restricts full-text access, the script verifies connectivity, and the developer/agent must manually review the citation text against the source.
 
 ## The Sources Appendix
 

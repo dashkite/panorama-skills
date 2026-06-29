@@ -84,6 +84,14 @@ async function verifyLink({ label, url }) {
       return false;
     }
 
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/pdf')) {
+      console.log(`  ✅ Success: HTTP ${response.status} (PDF Document)`);
+      console.log(`  📝 Content: Verification of page/section and quoted text must be done manually.`);
+      console.log(`  ---------------------------------------------------\n`);
+      return true;
+    }
+
     const html = await response.text();
     const plainText = cleanHtml(html);
     
