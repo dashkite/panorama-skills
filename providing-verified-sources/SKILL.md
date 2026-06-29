@@ -56,22 +56,25 @@ For academic and binary sources, the script has specific behaviors:
 
 ## The Sources Appendix
 
-Once links are verified, compile a detailed *Sources* appendix at the end of the document. This appendix provides additional context and verification details without distracting from the main analysis.
+Once links are verified, compile a detailed *Sources* appendix at the end of the document. This appendix must always be a subsection of the `## Appendices` section. If no such section exists at the end of the document, it must be created.
 
 ### Structure of the Appendix
 
-1. **Appendix Heading**: Add a `## Sources` section at the end of the document.
-2. **Claim Heading**: For each claim, add a level 3 heading (e.g. `### Support For Foreign Key Constraints`).
-3. **Source Title**: Within each claim section, add a subhead called `#### Source` and provide the title of the source, using the same reference link used in the main body.
-4. **Blockquote**: Beneath the source title, include a blockquote (`>`) containing the exact supporting text extracted from the source page.
+1. **Parent Heading**: Add a `## Appendices` second-level heading at the end of the document.
+2. **Sources Heading**: Under the `## Appendices` section, add a `### Sources` third-level heading.
+3. **Claim Heading**: For each claim, add a fourth-level heading (e.g. `#### Support For Foreign Key Constraints`).
+4. **Source Title**: Within each claim section, add a fifth-level heading (`##### Source`) and provide the title of the source using the same reference link used in the main body.
+5. **Blockquote**: Beneath the source title, include a blockquote (`>`) containing the exact supporting text extracted from the source page.
 
 ### Appendix Example
 
 ```markdown
-## Sources
+## Appendices
 
-### Support For Foreign Key Constraints
-#### Source
+### Sources
+
+#### Support For Foreign Key Constraints
+##### Source
 [PostgreSQL Migration Guide - Amazon Aurora DSQL User Guide][referential-integrity]
 
 > Referential integrity patterns: Aurora DSQL supports table relationships and JOIN operations. For referential integrity, implement validation in your application layer.
