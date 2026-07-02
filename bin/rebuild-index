@@ -1,0 +1,132 @@
+#!/usr/bin/env node
+// bin/rebuild-index.js - Dynamically rebuilds kb/index.md based on tags and content in kb/ subdirectories
+
+const fs = require('fs');
+const path = require('path');
+
+const repoDir = path.resolve(__dirname, '..');
+const kbDir = path.join(repoDir, 'kb');
+
+const categoryNames = {
+  'languages': 'Languages & Formats',
+  'testing': 'Testing',
+  'hx': 'Human Experience (HX)',
+  'patterns': 'Design Patterns & Paradigms',
+  'management': 'Repository & Metarepo Management',
+  'tooling': 'Tooling & Libraries',
+  'operations': 'Operations & CI/CD',
+  'security': 'Security & Verification'
+};
+
+const categoryOrder = [
+  'languages',
+  'testing',
+  'hx',
+  'patterns',
+  'management',
+  'tooling',
+  'operations',
+  'security'
+];
+
+function run() {
+  console.log('Scanning KB directories to rebuild index...');
+  const items = fs.readdirSync(kbDir);
+  const allArticles = [];
+
+  for (const item of items) {
+    const itemPath = path.join(kbDir, item);
+    if (!fs.statSync(itemPath).isDirectory()) {
+      continue;
+    }
+
+    const kbFile = path.join(itemPath, 'index.md');
+    if (!fs.existsSync(kbFile)) {
+      continue;
+    }
+
+    // Read and parse the article index.md
+    const content = fs.readFileSync(kbFile, 'utf8');
+
+    // Extract tags from YAML frontmatter
+    let tags = [];
+    const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
+    let body = content;
+    if (frontmatterMatch) {
+      body = content.substring(frontmatterMatch[0].length);
+      const tagsMatch = frontmatterMatch[1].match(/tags:\r?\n([\s\S]*?)(?:\r?\n\w+:|$)/);
+      if (tagsMatch) {
+        // Parse list entries (e.g. "  - testing")
+        tags = tagsMatch[1]
+          .split('\n')
+          .map(line => line.trim().replace(/^-\s*/, ''))
+          .filter(tag => tag.length > 0);
+      }
+    }
+
+    // Extract Title
+    const titleMatch = body.match(/^#\s+(.*)$/m);
+    const title = titleMatch ? titleMatch[1].trim() : item;
+
+    // Extract description (first paragraph)
+    const bodyAfterTitle = body.substring(body.indexOf(titleMatch[0]) + titleMatch[0].length).trim();
+    const firstPara = bodyAfterTitle.split(/\n\s*\n/)[0].trim();
+    let description = firstPara.replace(/\r?\n/g, ' ');
+    if (description.length > 200) {
+      description = description.substring(0, 197) + '...';
+    }
+
+    // Custom overrides for specific well-known articles to keep sitemap descriptions concise
+    if (item === 'writing-coffeescript') {
+      description = 'Comprehensive style guide, code formatting standards, coding philosophy, and class instantiation patterns.';
+    } else if (item === 'metarepo-management') {
+      description = 'Details on managing the Central Park metarepo with Tempo, repository provider choices, and batch execution.';
+    }
+
+    allArticles.push({
+      skillName: item,
+      title,
+      description,
+      tags
+    });
+  }
+
+  // Group articles by tag
+  const grouped = {};
+  for (const tag of categoryOrder) {
+    grouped[tag] = [];
+  }
+
+  for (const art of allArticles) {
+    for (const tag of art.tags) {
+      if (grouped[tag]) {
+        grouped[tag].push(art);
+      }
+    }
+  }
+
+  // Generate kb/index.md sitemap grouped by category
+  let indexContent = `# Panorama Knowledge Base\n\nWelcome to the Panorama Knowledge Base. This is a collection of in-depth, context-rich documentation for both LLMs and human developers.\n\n`;
+
+  for (const tag of categoryOrder) {
+    const displayName = categoryNames[tag];
+    const articles = grouped[tag];
+
+    if (articles && articles.length > 0) {
+      // Sort alphabetically by title
+      articles.sort((a, b) => a.title.localeCompare(b.title));
+
+      indexContent += `## ${displayName}\n\n`;
+      for (const art of articles) {
+        indexContent += `- [${art.title}](${art.skillName}/index.md): ${art.description}\n`;
+      }
+      indexContent += '\n';
+    }
+  }
+
+  const indexFile = path.join(kbDir, 'index.md');
+  fs.writeFileSync(indexFile, indexContent.trim() + '\n', 'utf8');
+  console.log('Successfully rebuilt kb/index.md sitemap!');
+}
+
+run();

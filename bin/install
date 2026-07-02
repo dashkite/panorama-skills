@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# bin/install - Installs skills and knowledge base into the metarepo's .gemini/ directory
+
+set -euo pipefail
+
+# Determine repository and metarepo root paths
+# Since the repository is located at <metarepo_root>/.tempo/repos/panorama-skills,
+# the metarepo root is three levels up: ../../../
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+METAREPO_DIR="$(cd "${REPO_DIR}/../../.." && pwd)"
+
+TARGET_SKILLS_DIR="${METAREPO_DIR}/.gemini/skills"
+TARGET_KB_DIR="${METAREPO_DIR}/.gemini/kb"
+
+# Function to clean and prepare a target directory
+prepare_target() {
+  local target="$1"
+  echo "Installing into ${target}..."
+  if [ -L "${target}" ]; then
+    echo "Removing existing symlink: ${target}"
+    rm "${target}"
+  elif [ -e "${target}" ]; then
+    echo "Removing existing directory/file: ${target}"
+    rm -rf "${target}"
+  fi
+  mkdir -p "${target}"
+}
+
+# Install skills
+prepare_target "${TARGET_SKILLS_DIR}"
+if [ -d "${REPO_DIR}/skills" ]; then
+  if command -v rsync >/dev/null 2>&1; then
+    rsync -av --delete "${REPO_DIR}/skills/" "${TARGET_SKILLS_DIR}/"
+  else
+    cp -R "${REPO_DIR}/skills/"* "${TARGET_SKILLS_DIR}/"
+  fi
+  echo "Skills successfully installed!"
+else
+  echo "Error: skills/ directory not found in ${REPO_DIR}"
+  exit 1
+fi
+
+# Install knowledge base (kb)
+prepare_target "${TARGET_KB_DIR}"
+if [ -d "${REPO_DIR}/kb" ]; then
+  if command -v rsync >/dev/null 2>&1; then
+    rsync -av --delete "${REPO_DIR}/kb/" "${TARGET_KB_DIR}/"
+  else
+    cp -R "${REPO_DIR}/kb/"* "${TARGET_KB_DIR}/"
+  fi
+  echo "Knowledge base successfully installed!"
+else
+  echo "Error: kb/ directory not found in ${REPO_DIR}"
+  exit 1
+fi
