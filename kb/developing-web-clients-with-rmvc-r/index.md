@@ -1,5 +1,6 @@
 ---
 tags:
+  - architecture
   - hx
 ---
 

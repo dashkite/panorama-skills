@@ -8,23 +8,29 @@ const repoDir = path.resolve(__dirname, '..');
 const kbDir = path.join(repoDir, 'kb');
 
 const categoryNames = {
+  'architecture': 'System Architecture',
   'languages': 'Languages & Formats',
   'testing': 'Testing',
   'hx': 'Human Experience (HX)',
   'patterns': 'Design Patterns & Paradigms',
+  'state': 'Data Modeling & State',
   'management': 'Repository & Metarepo Management',
   'tooling': 'Tooling & Libraries',
+  'package': 'Ecosystem & Dependencies',
   'operations': 'Operations & CI/CD',
   'security': 'Security & Verification'
 };
 
 const categoryOrder = [
+  'architecture',
   'languages',
   'testing',
   'hx',
   'patterns',
+  'state',
   'management',
   'tooling',
+  'package',
   'operations',
   'security'
 ];

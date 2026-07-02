@@ -8,14 +8,22 @@ const repoDir = path.resolve(__dirname, '..');
 const skillsDir = path.join(repoDir, 'skills');
 const kbDir = path.join(repoDir, 'kb');
 
-const skipList = new Set(['writing-coffeescript', 'metarepo-management']);
+const skipList = new Set([
+  'writing-coffeescript',
+  'metarepo-management',
+  'panorama-architecture-overview',
+  'state-management-guidelines',
+  'package-dependency-management',
+  'continuous-integration',
+  'error-handling-and-logging'
+]);
 
 const tagMap = {
   'building-and-publishing': ['operations'],
   'deploying': ['operations'],
   'design-and-styling': ['hx'],
   'developing-web-clients': ['hx'],
-  'developing-web-clients-with-rmvc-r': ['hx'],
+  'developing-web-clients-with-rmvc-r': ['architecture', 'hx'],
   'developing-web-components': ['hx'],
   'event-reactor-patterns': ['patterns'],
   'fj-repo-management': ['management'],
@@ -26,36 +34,49 @@ const tagMap = {
   'registry-management': ['operations'],
   'running-tests': ['testing'],
   'scenario-based-testing': ['testing'],
-  'universal-logic-patterns': ['patterns'],
+  'universal-logic-patterns': ['architecture', 'patterns'],
   'using-drns': ['tooling'],
   'using-generic': ['tooling'],
   'using-genie': ['tooling'],
-  'using-reactive-resources': ['patterns'],
+  'using-reactive-resources': ['state', 'patterns'],
   'writing-browser-based-tests': ['testing', 'hx'],
   'writing-coffeescript': ['languages'],
   'writing-documentation': ['languages'],
   'writing-tests': ['testing'],
-  'yq-yaml-management': ['languages', 'tooling']
+  'yq-yaml-management': ['languages', 'tooling'],
+  
+  // Stubs
+  'panorama-architecture-overview': ['architecture'],
+  'state-management-guidelines': ['state', 'patterns', 'hx'],
+  'package-dependency-management': ['package', 'operations'],
+  'continuous-integration': ['operations'],
+  'error-handling-and-logging': ['patterns', 'hx']
 };
 
 const categoryNames = {
+  'architecture': 'System Architecture',
   'languages': 'Languages & Formats',
   'testing': 'Testing',
   'hx': 'Human Experience (HX)',
   'patterns': 'Design Patterns & Paradigms',
+  'state': 'Data Modeling & State',
   'management': 'Repository & Metarepo Management',
   'tooling': 'Tooling & Libraries',
+  'package': 'Ecosystem & Dependencies',
   'operations': 'Operations & CI/CD',
   'security': 'Security & Verification'
 };
 
 const categoryOrder = [
+  'architecture',
   'languages',
   'testing',
   'hx',
   'patterns',
+  'state',
   'management',
   'tooling',
+  'package',
   'operations',
   'security'
 ];
@@ -97,7 +118,6 @@ function cleanupOldFlatFiles() {
   const items = fs.readdirSync(kbDir);
   for (const item of items) {
     const itemPath = path.join(kbDir, item);
-    // Delete only flat markdown files in kb/ root, except index.md
     if (fs.statSync(itemPath).isFile() && item.endsWith('.md') && item !== 'index.md') {
       console.log(`Cleaning up old flat file: ${item}`);
       fs.unlinkSync(itemPath);
@@ -148,11 +168,8 @@ function processSkill(skillName) {
       kbBody = kbContent.substring(existingFrontmatterMatch[0].length);
     }
 
-    // Update frontend tag to hx if present in tags array
-    const updatedTags = tags.map(t => t === 'frontend' ? 'hx' : t);
-
     // Write to folder/index.md with new frontmatter
-    const newKbContent = generateFrontmatter(updatedTags) + kbBody.trim() + '\n';
+    const newKbContent = generateFrontmatter(tags) + kbBody.trim() + '\n';
     fs.writeFileSync(kbPath, newKbContent, 'utf8');
 
     // Parse description for the index
@@ -162,7 +179,7 @@ function processSkill(skillName) {
     const firstPara = bodyAfterTitle.split(/\n\s*\n/)[0].trim();
     const description = firstPara.replace(/\r?\n/g, ' ');
 
-    return { skillName, title, description, tags: updatedTags };
+    return { skillName, title, description, tags };
   }
 
   const skillPath = path.join(skillsDir, skillName, 'SKILL.md');
@@ -237,6 +254,17 @@ function run() {
     const itemPath = path.join(skillsDir, item);
     if (fs.statSync(itemPath).isDirectory()) {
       const result = processSkill(item);
+      if (result) {
+        allArticles.push(result);
+      }
+    }
+  }
+
+  // Also process skipList items that are not skills (e.g. stubs)
+  for (const customName of skipList) {
+    const isProcessed = allArticles.some(a => a.skillName === customName);
+    if (!isProcessed) {
+      const result = processSkill(customName);
       if (result) {
         allArticles.push(result);
       }
