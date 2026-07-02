@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+// bin/list-stubs - Dynamically scans and lists all Knowledge Base articles that are currently stubs
+
+const fs = require('fs');
+const path = require('path');
+
+const repoDir = path.resolve(__dirname, '..');
+const kbDir = path.join(repoDir, 'kb');
+
+function run() {
+  console.log('Scanning Knowledge Base articles for baseline stubs...\n');
+  const items = fs.readdirSync(kbDir);
+  const stubs = [];
+
+  for (const item of items) {
+    const itemPath = path.join(kbDir, item);
+    if (!fs.statSync(itemPath).isDirectory()) {
+      continue;
+    }
+
+    const kbFile = path.join(itemPath, 'index.md');
+    if (!fs.existsSync(kbFile)) {
+      continue;
+    }
+
+    const content = fs.readFileSync(kbFile, 'utf8');
+
+    // Detect stub indicator keywords
+    if (content.toLowerCase().includes('baseline stub') || content.toLowerCase().includes('currently a stub')) {
+      // Extract Title
+      const titleMatch = content.match(/^#\s+(.*)$/m);
+      const title = titleMatch ? titleMatch[1].trim() : item;
+
+      stubs.push({
+        name: item,
+        title,
+        path: path.relative(repoDir, kbFile)
+      });
+    }
+  }
+
+  if (stubs.length === 0) {
+    console.log('🎉 No stubs found! All Knowledge Base articles are fully detailed.');
+  } else {
+    console.log(`Found ${stubs.length} articles that need content updates:\n`);
+    for (const stub of stubs) {
+      console.log(`- [${stub.title}]`);
+      console.log(`  Path: ${stub.path}`);
+      console.log(`  Folder: kb/${stub.name}/\n`);
+    }
+  }
+}
+
+run();
