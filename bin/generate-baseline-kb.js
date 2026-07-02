@@ -11,11 +11,13 @@ const kbDir = path.join(repoDir, 'kb');
 const skipList = new Set([
   'writing-coffeescript',
   'metarepo-management',
+  'introduction-to-panorama',
   'panorama-architecture-overview',
   'state-management-guidelines',
   'package-dependency-management',
   'continuous-integration',
-  'error-handling-and-logging'
+  'error-handling-and-logging',
+  'generative-development-standards'
 ]);
 
 const tagMap = {
@@ -45,12 +47,14 @@ const tagMap = {
   'writing-tests': ['testing'],
   'yq-yaml-management': ['languages', 'tooling'],
   
-  // Stubs
+  // Stubs & Custom Articles
+  'introduction-to-panorama': ['architecture'],
   'panorama-architecture-overview': ['architecture'],
   'state-management-guidelines': ['state', 'patterns', 'hx'],
   'package-dependency-management': ['package', 'operations'],
   'continuous-integration': ['operations'],
-  'error-handling-and-logging': ['patterns', 'hx']
+  'error-handling-and-logging': ['patterns', 'hx'],
+  'generative-development-standards': ['generative', 'collaboration']
 };
 
 const categoryNames = {
@@ -64,6 +68,8 @@ const categoryNames = {
   'tooling': 'Tooling & Libraries',
   'package': 'Ecosystem & Dependencies',
   'operations': 'Operations & CI/CD',
+  'generative': 'Generative Development',
+  'collaboration': 'Collaboration & Workflows',
   'security': 'Security & Verification'
 };
 
@@ -78,6 +84,8 @@ const categoryOrder = [
   'tooling',
   'package',
   'operations',
+  'generative',
+  'collaboration',
   'security'
 ];
 

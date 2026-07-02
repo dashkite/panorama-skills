@@ -18,6 +18,8 @@ const categoryNames = {
   'tooling': 'Tooling & Libraries',
   'package': 'Ecosystem & Dependencies',
   'operations': 'Operations & CI/CD',
+  'generative': 'Generative Development',
+  'collaboration': 'Collaboration & Workflows',
   'security': 'Security & Verification'
 };
 
@@ -32,6 +34,8 @@ const categoryOrder = [
   'tooling',
   'package',
   'operations',
+  'generative',
+  'collaboration',
   'security'
 ];
 

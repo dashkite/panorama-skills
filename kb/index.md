@@ -5,6 +5,7 @@ Welcome to the Panorama Knowledge Base. This is a collection of in-depth, contex
 ## System Architecture
 
 - [Developing Web Clients With RMVC+R](developing-web-clients-with-rmvc-r/index.md): Expert guidance for building Web clients using the RMVC+R (Reactive Model-View-Controller + Resources) architecture and the Dashkite stack. Use when designing application-level components, controllers, or resource interactions.
+- [Introduction to Panorama](introduction-to-panorama/index.md): This guide introduces the Panorama architecture, detailing the project vision, core philosophy, and developer experience.
 - [Panorama Architecture Overview](panorama-architecture-overview/index.md): This article outlines the high-level design, goals, and core principles of the Panorama architecture.
 - [Universal Logic Patterns](universal-logic-patterns/index.md): Guidance for writing universal, platform-independent logic for models and controllers. Use when you need to ensure core logic can be tested in Node.js while supporting browser-based views.
 
@@ -69,6 +70,14 @@ Welcome to the Panorama Knowledge Base. This is a collection of in-depth, contex
 - [Deploying (Dashkite Standard)](deploying/index.md): Expert guidance for deploying Web sites, modules, and cloud infrastructure using Genie and Dynamic Resource Names (DRNs). Use when configuring genie.yaml for deployment or running 'genie deploy/publish'.
 - [Package & Dependency Management](package-dependency-management/index.md): This article outlines how npm packages, internal repository linking, and versioning are managed in the Panorama ecosystem.
 - [Registry Management](registry-management/index.md): Best practices for using and mocking @dashkite/registry in tests and components. Use when you need to store or retrieve shared application services, controllers, or global state.
+
+## Generative Development
+
+- [Generative Development Standards](generative-development-standards/index.md): This guide outlines standards and protocols for generative AI systems and human developers collaborating within the Panorama ecosystem.
+
+## Collaboration & Workflows
+
+- [Generative Development Standards](generative-development-standards/index.md): This guide outlines standards and protocols for generative AI systems and human developers collaborating within the Panorama ecosystem.
 
 ## Security & Verification
 
