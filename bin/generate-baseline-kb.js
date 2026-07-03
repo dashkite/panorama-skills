@@ -17,7 +17,12 @@ const skipList = new Set([
   'package-dependency-management',
   'continuous-integration',
   'error-handling-and-logging',
-  'generative-development-standards'
+  'generative-development-standards',
+  'least-privilege-and-security',
+  'graph-relational-mapping',
+  'routing-and-page-management',
+  'application-flow-and-processing',
+  'kite-cli-reference'
 ]);
 
 const tagMap = {
@@ -54,7 +59,12 @@ const tagMap = {
   'package-dependency-management': ['package', 'operations'],
   'continuous-integration': ['operations'],
   'error-handling-and-logging': ['patterns', 'hx'],
-  'generative-development-standards': ['generative', 'collaboration']
+  'generative-development-standards': ['generative', 'collaboration'],
+  'least-privilege-and-security': ['security'],
+  'graph-relational-mapping': ['state'],
+  'routing-and-page-management': ['hx'],
+  'application-flow-and-processing': ['patterns'],
+  'kite-cli-reference': ['tooling']
 };
 
 const categoryNames = {
