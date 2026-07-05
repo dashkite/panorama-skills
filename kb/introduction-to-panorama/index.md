@@ -33,31 +33,42 @@ Application specifications are processed deterministically so they run the same 
 
 ### Tested
 
-Applications can be deployed to a [test environment][running-tests] to make sure everything works as expected.
+Applications can be deployed to a [test environment][cloud-first-testing] to make sure everything works as expected.
+
+### Cost Effective
+
+Applications are deployed using a scale-to-zero architecture where costs scale based on usage. For test applications, prototypes, or applications with a relatively small audience, costs are minimal.
 
 ## Features
 
-- [Caching and security policies][security-policies] ([Enchant][enchant-repo])
-- [Least privilege authorization][security-policies] ([Runes][runes-repo], [Cobalt][cobalt-repo], [Guardian][guardian-repo])
+- [Caching policies][caching-policies] and [security policies][security-policies] ([Enchant][enchant-repo])
+- [Least privilege][least-privilege] ([Runes][runes-repo], [Cobalt][cobalt-repo], [Guardian][guardian-repo])
+- [Application isolation][application-isolation]
 - [Graph-based knowledge graph][graph-mapping] ([Trellis][trellis-repo])
 - [Graph-relational mapping][graph-mapping] ([Granite][granite-repo])
-- [Rule-based HTTP request and reply processing][flow-processing] ([Sublime][sublime-repo])
-- Reactive HTTP client ([Atlas][atlas-repo])
+- [Rule-based HTTP request and reply processing][http-processing] ([Sublime][sublime-repo])
+- [Reactive HTTP client][http-processing] ([Atlas][atlas-repo])
 - [Reactive model-view-controller layer][mvc-layer] ([Belmont][belmont-repo], [Broadway][broadway-repo], [Addison][addison-repo])
-- Credentials manager ([Sierra][sierra-repo])
+- [Credentials manager][credentials-management] ([Sierra][sierra-repo])
 - [Application state management][state-management] ([Cordoba][cordoba-repo])
 - [Application routing][routing-and-page] ([Monterey][monterey-repo])
 - [Page management][routing-and-page] ([Krypton][krypton-repo])
 - [Reactive Web Components][web-components] ([Wayland][wayland-repo])
-- [Application flow graph][flow-processing] ([Malibu][malibu-repo])
+- [Application flow graph][flow-graph] ([Malibu][malibu-repo])
 - [Creator interaction][kite-cli-ref] ([Kite CLI][kite-repo])
 
 [air-overview]: ../panorama-architecture-overview/index.md
 [generative-standards]: ../generative-development-standards/index.md
 [running-tests]: ../running-tests/index.md
-[security-policies]: ../least-privilege-and-security/index.md
+[cloud-first-testing]: ../cloud-first-testing/index.md
+[caching-policies]: ../caching-policies/index.md
+[security-policies]: ../security-policies/index.md
+[least-privilege]: ../least-privilege/index.md
+[application-isolation]: ../application-isolation/index.md
+[credentials-management]: ../credentials-management/index.md
 [graph-mapping]: ../graph-relational-mapping/index.md
-[flow-processing]: ../application-flow-and-processing/index.md
+[http-processing]: ../http-request-processing/index.md
+[flow-graph]: ../application-flow-graph/index.md
 [mvc-layer]: ../developing-web-clients-with-rmvc-r/index.md
 [state-management]: ../state-management-guidelines/index.md
 [routing-and-page]: ../routing-and-page-management/index.md

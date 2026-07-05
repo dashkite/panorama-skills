@@ -18,11 +18,17 @@ const skipList = new Set([
   'continuous-integration',
   'error-handling-and-logging',
   'generative-development-standards',
-  'least-privilege-and-security',
+  'caching-policies',
+  'security-policies',
+  'least-privilege',
+  'application-isolation',
   'graph-relational-mapping',
   'routing-and-page-management',
-  'application-flow-and-processing',
-  'kite-cli-reference'
+  'application-flow-graph',
+  'http-request-processing',
+  'kite-cli-reference',
+  'cloud-first-testing',
+  'credentials-management'
 ]);
 
 const tagMap = {
@@ -60,11 +66,17 @@ const tagMap = {
   'continuous-integration': ['operations'],
   'error-handling-and-logging': ['patterns', 'hx'],
   'generative-development-standards': ['generative', 'collaboration'],
-  'least-privilege-and-security': ['security'],
+  'caching-policies': ['operations'],
+  'security-policies': ['security'],
+  'least-privilege': ['security'],
+  'application-isolation': ['security', 'architecture'],
   'graph-relational-mapping': ['state'],
   'routing-and-page-management': ['hx'],
-  'application-flow-and-processing': ['patterns'],
-  'kite-cli-reference': ['tooling']
+  'application-flow-graph': ['patterns'],
+  'http-request-processing': ['patterns'],
+  'kite-cli-reference': ['tooling'],
+  'cloud-first-testing': ['testing', 'operations'],
+  'credentials-management': ['security']
 };
 
 const categoryNames = {
