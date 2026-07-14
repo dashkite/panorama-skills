@@ -67,27 +67,33 @@ calculate(x,y)+[1,2]
 ```
 
 ### Group Punctuation
-Do not place spaces between adjacent punctuation symbols. Collapse spaces when closing consecutive brackets or braces (e.g., `}}`, `}]`, `]]`). Use empty inline literals without spacing next to enclosing symbols.
+Do not place spaces between adjacent punctuation symbols. Collapse spaces when closing consecutive brackets, braces, or parentheses (e.g., `}}`, `}]`, `]]`, `})`, `])`, `))`). Use empty inline literals without spacing next to enclosing symbols.
 
 ```coffeescript
-# BAD: Extra spaces within grouped punctuation
+# BAD: Extra spaces within grouped punctuation and uncollapsed closing delimiters
 options = { timeout: 1000, force: true }
 initialize = ( options = {  } ) ->
+lambda = ( lift Lambda, { region } )
 
-# GOOD: Grouped punctuation without intermediate spaces
+# GOOD: Grouped punctuation without intermediate spaces and collapsed closing delimiters
 options = ({ timeout: 1000, force: true })
 initialize = ( options = {} ) ->
+lambda = ( lift Lambda, { region })
 ```
 
-### Lisp-Style Grouping
-For function calls, prefer wrapping the entire call in parentheses with liberal inner spaces instead of the C-style `func(args)`.
+### Lisp-Style Grouping & Unwrapping
+For function calls, prefer wrapping the entire call in parentheses with liberal inner spaces instead of the C-style `func(args)`. 
+
+However, omit parentheses for simple function applications at the statement level or forming the entire right-hand side of an assignment. Parentheses should only be used to resolve nesting, chaining, or precedence.
 
 ```coffeescript
-# BAD: C-style function execution
+# BAD: C-style function execution or redundant wrapping of simple calls
 myFunction(arg1, arg2)
+lambda = ( lift Lambda, { region })
 
-# GOOD: Lisp-style space-wrapped evaluation
+# GOOD: Lisp-style space-wrapped evaluation or unwrapped simple calls
 ( myFunction arg1, arg2 )
+lambda = lift Lambda, { region }
 ```
 
 ## Logic & Flow
@@ -141,6 +147,17 @@ if active and visible
 if active && visible
 ```
 
+### Logical Precedence
+Parenthesize sub-expressions in compound logical statements (especially those involving negation `!`, existential operators `?`, or comparison operators) to make the evaluation order explicit and readable.
+
+```coffeescript
+# BAD
+if ! @specification? || result.version != @version
+
+# GOOD
+if ( ! @specification? ) || ( result.version != @version )
+```
+
 ### Await in Implicit Returns
 Avoid using `await` in implicit returns. If the function is declared `async`, it automatically wraps the returned value in a promise. Adding `await` at the end forces the event loop to yield unnecessarily.
 
@@ -152,6 +169,17 @@ fetchData = ->
 # GOOD: Let the async wrapper handle promise resolution
 fetchData = ->
   api.get "/data"
+```
+
+### List Comprehensions
+Always parenthesize inline `for` comprehensions when they are expected to evaluate to an array. Omitting them changes the CoffeeScript syntax from an array comprehension expression to a loop modifier statement (which only assigns the last scalar value of the iteration to the target variable).
+
+```coffeescript
+# BAD: Modifier loop statement assigns only the last SubnetId scalar to subnets
+subnets = subnet.SubnetId for subnet in Subnets
+
+# GOOD: Parenthesized array comprehension correctly evaluates to an array of SubnetIds
+subnets = ( subnet.SubnetId for subnet in Subnets )
 ```
 
 ### Split Assignments
@@ -226,3 +254,20 @@ Functions should ideally be 5-10 lines. If a function exceeds this, decompose it
 
 ### Reveal Logic
 Refactoring should seek to make the underlying logic self-explanatory, not just to compress the line count.
+
+## Logging & Clean Codebase
+
+### No Adhoc Logging
+Do not commit adhoc console logging statements (`console.log`, `console.warn`, `console.error`) in core codebase source files. Clean them up or use conditional logging frameworks (like `manager.log` in tests) to keep build and test suite run outputs clean and focused.
+
+```coffeescript
+# BAD: Unconditional print statements clutter output
+deploy = ( options ) ->
+  console.log "Zipping Lambda function code..."
+  zip = await bundle "..."
+  console.log "Lambda function deployed successfully."
+
+# GOOD: Clean, silent codebase run
+deploy = ( options ) ->
+  zip = await bundle "..."
+```
