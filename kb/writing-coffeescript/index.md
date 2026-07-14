@@ -84,7 +84,7 @@ lambda = ( lift Lambda, { region })
 ### Lisp-Style Grouping & Unwrapping
 For function calls, prefer wrapping the entire call in parentheses with liberal inner spaces instead of the C-style `func(args)`. 
 
-However, omit parentheses for simple function applications at the statement level or forming the entire right-hand side of an assignment. Parentheses should only be used to resolve nesting, chaining, or precedence.
+However, omit parentheses for simple function applications at the statement level or forming the entire right-hand side of an assignment. Parentheses should only be used to resolve nesting, chaining, or precedence. Similarly, omit grouping parenthesis for multiline expressions unless they’re otherwise necessary.
 
 ```coffeescript
 # BAD: C-style function execution or redundant wrapping of simple calls
